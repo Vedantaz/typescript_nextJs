@@ -93,7 +93,7 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Wrapper>
         <h1>React - Type - Quiz</h1>
-        {complete && <div className="complete">Quiz is complete</div>}
+        {/* {complete && <div className="complete">Quiz is complete</div>} */}
         {gameOver || userAnswers.length === TotalQuestions ? (
 
           <button className='start' onClick={startQuiz}>Start Quiz</button>) : null}
@@ -123,6 +123,7 @@ const App: React.FC = () => {
           />
         )}
         {/* // made data types of userAnswers.length (boolean ) and number  to boolean  */}
+
         {!loading && !gameOver && !!userAnswers.length === Boolean(number + 1) && number !== TotalQuestions - 1 ? (
           <button className="next" onClick={nextQuestion}>
             Next Question
