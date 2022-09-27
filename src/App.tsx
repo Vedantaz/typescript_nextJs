@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+// import './App.css';
 // import the components 
 import QuestionCard from './components/QuestionCard';
 // importing the functions to fetch data from API..
@@ -7,7 +7,6 @@ import fetchQuizQuestions, { QuestionState, Difficulty } from './API';
 
 // import styles from the  global styles
 import { GlobalStyle, Wrapper } from "./App.styles";
-
 //import loader image
 import Loader from "./images/loading.gif";     // to insert in process
 
@@ -22,19 +21,17 @@ export type AnswerObject = {
 }
 
 const App: React.FC = () => {
-
   const [loading, setLoading] = React.useState(false);
   const [questions, setQuestions] = useState<QuestionState[]>([])
-  const [number, setNumbers] = useState(0)
+  const [number, setNumber] = useState(0)
   const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([])
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
-  const [complete, setComplete] = React.useState<boolean>(false);
-  const [difficulty, setDifficulty] = React.useState<string>(Difficulty.EASY);
-
+  // const [complete, setComplete] = React.useState<boolean>(false);
+  // const [difficulty, setDifficulty] = React.useState<string>(Difficulty.EASY);
 
   const startQuiz = async () => {
-    setComplete(false);
+    // setComplete(false);
     setLoading(true);
     setGameOver(false);
     const newQuestion = await fetchQuizQuestions(
@@ -44,7 +41,7 @@ const App: React.FC = () => {
     setQuestions(newQuestion);
     setScore(0);
     setUserAnswers([]);
-    setNumbers(0);
+    setNumber(0);
     setLoading(false);
   };
 
@@ -54,7 +51,7 @@ const App: React.FC = () => {
       const answer = e.currentTarget.value;
 
       // check answer against correct answer 
-      const correct = questions[number].correct_answers === answer;
+      const correct = questions[number].correct_answer === answer;
       // add score if answer is correct
       if (correct) setScore(prev => prev + 1)
       // save answers in the array for user answers
@@ -62,11 +59,10 @@ const App: React.FC = () => {
         question: questions[number].question,
         answer,
         correct,
-        correctAnswer: questions[number].correct_answers,
+        correctAnswer: questions[number].correct_answer,
       };
       setUserAnswers((prev) => [...prev, answerObject]);
     }
-
   };
   // const handleNext = () => {
   //   if (number < TotalQuestions - 1) setNumbers((prev) => prev + 1);
@@ -84,10 +80,9 @@ const App: React.FC = () => {
       setGameOver(true);
     }
     else {
-      setNumbers(nextQ);
+      setNumber(nextQ);
     }
   };
-
   return (
     <>
       <GlobalStyle />
@@ -121,14 +116,19 @@ const App: React.FC = () => {
             userAnswer={userAnswers ? userAnswers[number] : undefined}
             callback={checkAnswer}
           />
+
+
         )}
+
         {/* // made data types of userAnswers.length (boolean ) and number  to boolean  */}
 
-        {!loading && !gameOver && !!userAnswers.length === Boolean(number + 1) && number !== TotalQuestions - 1 ? (
+        {!loading && !gameOver && userAnswers.length === number + 1 && number !== TotalQuestions - 1 ? (
           <button className="next" onClick={nextQuestion}>
             Next Question
           </button>
+
         ) : null}
+
       </Wrapper>
     </>)
 };
